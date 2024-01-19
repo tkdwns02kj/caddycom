@@ -1,0 +1,235 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>AssgnCancelLog CRUD</title>
+</head>
+<body>
+
+<!-- Display all AssgnCancelLogs -->
+<h3>All AssgnCancelLogs</h3>
+<div id="allLogs"></div>
+
+<!-- Form to create a new AssgnCancelLog -->
+<form id="createForm">
+    <h3>Create AssgnCancelLog</h3>
+    <label for="giId">GI ID:</label>
+    <input type="text" id="giId" name="giId" required>
+    <br>
+    <label for="craSeq">CRA SEQ:</label>
+    <input type="text" id="craSeq" name="craSeq" required>
+    <br>
+    <label for="aclDate">ACL Date:</label>
+    <input type="text" id="aclDate" name="aclDate" required>
+    <br>
+    <label for="aclTime">ACL Time:</label>
+    <input type="text" id="aclTime" name="aclTime" required>
+    <br>
+    <label for="aclReqUiId">ACL Req UI ID:</label>
+    <input type="text" id="aclReqUiId" name="aclReqUiId" required>
+    <br>
+    <label for="aclRevUiId">ACL Rev UI ID:</label>
+    <input type="text" id="aclRevUiId" name="aclRevUiId" required>
+    <br>
+    <label for="aclReqType">ACL Req Type:</label>
+    <input type="text" id="aclReqType" name="aclReqType" required>
+    <br>
+    <label for="aclReqContent">ACL Req Content:</label>
+    <input type="text" id="aclReqContent" name="aclReqContent" required>
+    <br>
+    <button type="button" onclick="createAssgnCancelLog()">Create AssgnCancelLog</button>
+</form>
+
+<!-- Form to update an existing AssgnCancelLog -->
+<form id="updateForm">
+    <h3>Update AssgnCancelLog</h3>
+    <label for="updateAclSeq">ACL SEQ to Update:</label>
+    <input type="text" id="updateAclSeq" name="updateAclSeq" required>
+    <br>
+    <label for="updateGiId">GI ID:</label>
+    <input type="text" id="updateGiId" name="updateGiId" required>
+    <br>
+    <label for="updateCraSeq">CRA SEQ:</label>
+    <input type="text" id="updateCraSeq" name="updateCraSeq" required>
+    <br>
+    <label for="updateAclDate">ACL Date:</label>
+    <input type="text" id="updateAclDate" name="updateAclDate" required>
+    <br>
+    <label for="updateAclTime">ACL Time:</label>
+    <input type="text" id="updateAclTime" name="updateAclTime" required>
+    <br>
+    <label for="updateAclReqUiId">ACL Req UI ID:</label>
+    <input type="text" id="updateAclReqUiId" name="updateAclReqUiId" required>
+    <br>
+    <label for="updateAclRevUiId">ACL Rev UI ID:</label>
+    <input type="text" id="updateAclRevUiId" name="updateAclRevUiId" required>
+    <br>
+    <label for="updateAclReqType">ACL Req Type:</label>
+    <input type="text" id="updateAclReqType" name="updateAclReqType" required>
+    <br>
+    <label for="updateAclReqContent">ACL Req Content:</label>
+    <input type="text" id="updateAclReqContent" name="updateAclReqContent" required>
+    <br>
+    <button type="button" onclick="updateAssgnCancelLog()">Update AssgnCancelLog</button>
+</form>
+
+    <hr>
+
+    <!-- Table to display existing AssgnCancelLogs -->
+    <h3>Existing AssgnCancelLogs</h3>
+    <table border="1">
+        <thead>
+            <tr>
+                <th>ACL Seq</th>
+                <th>GI ID</th>
+                <th>CRA Seq</th>
+                <th>ACL Date</th>
+                <th>ACL Time</th>
+                <th>ACL Req UI ID</th>
+                <th>ACL Rev UI ID</th>
+                <th>ACL Req Type</th>
+                <th>ACL Req Content</th>
+                <th>Action</th>
+            </tr>
+        </thead>
+        <tbody id="assgnCancelLogTableBody">
+            <!-- AssgnCancelLog entries will be displayed here -->
+        </tbody>
+    </table>
+
+    <hr>
+
+    <!-- Button to fetch all AssgnCancelLogs -->
+    <button type="button" onclick="fetchAllAssgnCancelLogs()">Fetch All AssgnCancelLogs</button>
+
+    <script>
+        function createAssgnCancelLog() {
+            // Get values from the form
+            const giId = document.getElementById('giId').value;
+            const craSeq = document.getElementById('craSeq').value;
+            const aclDate = document.getElementById('aclDate').value;
+            const aclTime = document.getElementById('aclTime').value;
+            const aclReqUiId = document.getElementById('aclReqUiId').value;
+            const aclRevUiId = document.getElementById('aclRevUiId').value;
+            const aclReqType = document.getElementById('aclReqType').value;
+            const aclReqContent = document.getElementById('aclReqContent').value;
+
+            // Make a POST request to create a new AssgnCancelLog
+            fetch('/api/assgn-cancel-logs', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    giId,
+                    craSeq,
+                    aclDate,
+                    aclTime,
+                    aclReqUiId,
+                    aclRevUiId,
+                    aclReqType,
+                    aclReqContent,
+                }),
+            })
+            .then(response => response.json())
+            .then(data => {
+                console.log('AssgnCancelLog created:', data);
+                // Refresh the table after creating a new AssgnCancelLog
+                fetchAllAssgnCancelLogs();
+            })
+            .catch(error => console.error('Error creating AssgnCancelLog:', error));
+        }
+
+        function fetchAllAssgnCancelLogs() {
+            // Make a GET request to fetch all AssgnCancelLogs
+            fetch('/api/assgn-cancel-logs')
+            .then(response => response.json())
+            .then(data => {
+                console.log('All AssgnCancelLogs:', data);
+                // Update the table with the fetched data
+                updateAssgnCancelLogTable(data);
+            })
+            .catch(error => console.error('Error fetching AssgnCancelLogs:', error));
+        }
+
+        function updateAssgnCancelLogTable(assgnCancelLogs) {
+            const tableBody = document.getElementById('assgnCancelLogTableBody');
+            tableBody.innerHTML = ''; // Clear existing rows
+
+            assgnCancelLogs.forEach(log => {
+                const row = document.createElement('tr');
+                row.innerHTML = `
+                    <td>${log.aclSeq}</td>
+                    <td>${log.giId}</td>
+                    <td>${log.craSeq}</td>
+                    <td>${log.aclDate}</td>
+                    <td>${log.aclTime}</td>
+                    <td>${log.aclReqUiId}</td>
+                    <td>${log.aclRevUiId}</td>
+                    <td>${log.aclReqType}</td>
+                    <td>${log.aclReqContent}</td>
+                    <td>
+                        <button onclick="updateAssgnCancelLog(${log.aclSeq})">Update</button>
+                        <button onclick="deleteAssgnCancelLog(${log.aclSeq})">Delete</button>
+                    </td>
+                `;
+                tableBody.appendChild(row);
+            });
+        }
+
+     // Function to update an existing AssgnCancelLog
+        function updateAssgnCancelLog() {
+            const updateAclSeq = document.getElementById('updateAclSeq').value;
+            const updateGiId = document.getElementById('updateGiId').value;
+            const updateCraSeq = document.getElementById('updateCraSeq').value;
+            const updateAclDate = document.getElementById('updateAclDate').value;
+            const updateAclTime = document.getElementById('updateAclTime').value;
+            const updateAclReqUiId = document.getElementById('updateAclReqUiId').value;
+            const updateAclRevUiId = document.getElementById('updateAclRevUiId').value;
+            const updateAclReqType = document.getElementById('updateAclReqType').value;
+            const updateAclReqContent = document.getElementById('updateAclReqContent').value;
+
+            fetch(`/api/assgn-cancel-logs/${updateAclSeq}`, {
+                method: 'PUT',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({
+                    giId: updateGiId,
+                    craSeq: updateCraSeq,
+                    aclDate: updateAclDate,
+                    aclTime: updateAclTime,
+                    aclReqUiId: updateAclReqUiId,
+                    aclRevUiId: updateAclRevUiId,
+                    aclReqType: updateAclReqType,
+                    aclReqContent: updateAclReqContent,
+                }),
+            })
+            .then(response => response.json())
+            .then(updatedLog => {
+                console.log('Updated Log:', updatedLog);
+                // Refresh the displayed logs after update
+                displayAllAssgnCancelLogs();
+            })
+            .catch(error => console.error('Error during update:', error));
+        }
+
+        function deleteAssgnCancelLog(aclSeq) {
+            // Make a DELETE request to delete the AssgnCancelLog
+            fetch(`/api/assgn-cancel-logs/${aclSeq}`, {
+                method: 'DELETE',
+            })
+            .then(() => {
+                console.log(`AssgnCancelLog with ACL Seq ${aclSeq} deleted`);
+                // Refresh the table after deleting the AssgnCancelLog
+                fetchAllAssgnCancelLogs();
+            })
+            .catch(error => console.error(`Error deleting AssgnCancelLog with ACL Seq ${aclSeq}:`, error));
+        }
+
+        // Fetch all AssgnCancelLogs when the page loads
+        fetchAllAssgnCancelLogs();
+    </script>
+</body>
+</html>

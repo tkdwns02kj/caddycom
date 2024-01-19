@@ -1,0 +1,26 @@
+<!-- index.html -->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>User Info Page</title>
+</head>
+<body>
+    <h1>User Info Page</h1>
+    <table>
+        <thead>
+            <tr>
+                <th>ID</th>
+                <th>Name</th>
+                <!-- Add more columns if needed -->
+            </tr>
+        </thead>
+        <tbody>
+            <tr th:each="user : ${userInfos}">
+                <td th:text="${user.uiSeq}"></td>
+                <td th:text="${user.uiName}"></td>
+                <!-- Add more cells if needed -->
+            </tr>
+        </tbody>
+    </table>
+</body>
+</html>
